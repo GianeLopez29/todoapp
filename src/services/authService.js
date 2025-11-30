@@ -15,7 +15,12 @@ export const registerUser = async (userData) => {
     verificationToken
   });
 
-  await sendVerificationEmail(user.email, verificationToken);
+  try {
+    await sendVerificationEmail(user.email, verificationToken);
+  } catch (emailError) {
+    console.error('Error sending verification email:', emailError);
+    // Continue without failing - user can still login if email fails
+  }
 
   return {
     message: 'Usuario registrado. Revisa tu email para verificar la cuenta.',

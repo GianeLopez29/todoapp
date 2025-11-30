@@ -33,5 +33,5 @@ export const taskSchema = Joi.object({
 
 export const categorySchema = Joi.object({
   name: Joi.string().min(1).max(50).required(),
-  color: Joi.string().pattern(/^#[0-9A-F]{6}$/i)
+  color: Joi.string().pattern(/^#[0-9A-F]{6}$/i).default('#3B82F6')
 });
