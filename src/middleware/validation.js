@@ -2,13 +2,15 @@ import Joi from 'joi';
 
 export const validate = (schema) => {
   return (req, res, next) => {
-    const { error } = schema.validate(req.body);
+    const { error, value } = schema.validate(req.body);
     if (error) {
       return res.status(400).json({ 
+        success: false,
         message: 'Datos inválidos',
         details: error.details[0].message 
       });
     }
+    req.body = value;
     next();
   };
 };
@@ -26,9 +28,10 @@ export const loginSchema = Joi.object({
 
 export const taskSchema = Joi.object({
   title: Joi.string().min(1).max(200).required(),
-  description: Joi.string().max(1000).allow(''),
-  dueDate: Joi.date().allow(null),
-  category: Joi.string().allow(null)
+  description: Joi.string().max(1000).allow('').default(''),
+  dueDate: Joi.date().allow(null).default(null),
+  category: Joi.string().allow(null).default(null),
+  completed: Joi.boolean().default(false)
 });
 
 export const categorySchema = Joi.object({
